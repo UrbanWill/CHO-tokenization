@@ -1882,7 +1882,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-  "updatedAt": "2021-08-07T08:50:46.007Z",
+  "updatedAt": "2021-08-09T08:35:54.279Z",
   "devdoc": {
     "details": "Collection of functions related to the address type",
     "kind": "dev",
