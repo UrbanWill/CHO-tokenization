@@ -4,7 +4,7 @@ import MyTokenSale from "./contracts/MyTokenSale.json";
 import KycContract from "./contracts/KycContract.json";
 import getWeb3 from "./getWeb3";
 
-import Whitelist from "./components/Whitelist";
+import Whitelist from "./components/whitelist/Whitelist";
 
 import "./App.css";
 
@@ -93,7 +93,6 @@ class App extends Component {
           accounts={this.accounts}
           setKycCompleted={this.kycContract.methods.setKycCompleted}
         />
-        <h2>Enable your account</h2>
         <h2>Buy Chourico-Tokens</h2>
         <p>Send Ether to this address: {this.state.tokenSaleAddress}</p>
         <p>You have: {this.state.userTokens} CHO tokens</p>

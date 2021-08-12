@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./whitelist.css";
+
 const Whitelist = ({ accounts, setKycCompleted }) => {
   const [addressToWhitelist, setAddressToWhitelist] = useState("0x123..");
   const handleInputChange = (event) => {
@@ -12,14 +14,17 @@ const Whitelist = ({ accounts, setKycCompleted }) => {
   };
 
   return (
-    <div>
-      Address to allow:{" "}
-      <input
-        type="text"
-        name="kycAddress"
-        value={addressToWhitelist}
-        onChange={handleInputChange}
-      />
+    <div className="whitelist-container">
+      <h2>Enable your account</h2>
+      <div className="whitelist-input-container">
+        <p>Address to allow:</p>
+        <input
+          type="text"
+          name="kycAddress"
+          value={addressToWhitelist}
+          onChange={handleInputChange}
+        />
+      </div>
       <button type="button" onClick={handleKycSubmit}>
         Add Address to Whitelist
       </button>
