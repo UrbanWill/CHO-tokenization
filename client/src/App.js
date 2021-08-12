@@ -7,7 +7,12 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 
 class App extends Component {
-  state = { loaded: false, kycAddress: "0x123...  ", tokenSaleAddress: null };
+  state = {
+    loaded: false,
+    kycAddress: "0x123...  ",
+    tokenSaleAddress: null,
+    userTokens: 0,
+  };
 
   componentDidMount = async () => {
     try {
@@ -37,12 +42,16 @@ class App extends Component {
           KycContract.networks[this.networkId].address
       );
 
+      this.listenToTokenTransfer();
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({
-        loaded: true,
-        tokenSaleAddress: this.myTokenSale._address,
-      });
+      this.setState(
+        {
+          loaded: true,
+          tokenSaleAddress: this.myTokenSale._address,
+        },
+        this.updateUserTokens
+      );
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -52,6 +61,25 @@ class App extends Component {
     }
   };
 
+  updateUserTokens = async () => {
+    let userTokens = await this.myToken.methods
+      .balanceOf(this.accounts[0])
+      .call();
+    this.setState({ userTokens: userTokens });
+  };
+
+  listenToTokenTransfer = async () => {
+    this.myToken.events
+      .Transfer({ to: this.accounts[0] })
+      .on("data", this.updateUserTokens);
+  };
+
+  handleBuyToken = async () => {
+    await this.myTokenSale.methods
+      .buyTokens(this.accounts[0])
+      .send({ from: this.accounts[0], value: 1 });
+  };
+
   handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -59,7 +87,6 @@ class App extends Component {
     this.setState({
       [name]: value,
     });
-    console.log(`${name}: ${this.state[name]} `);
   };
 
   handleKycSubmit = async () => {
@@ -90,6 +117,10 @@ class App extends Component {
         </button>
         <h2>Buy Chourico-Tokens</h2>
         <p>Send Ether to this address: {this.state.tokenSaleAddress}</p>
+        <p>You have: {this.state.userTokens} CHO tokens</p>
+        <button type="button" onClick={this.handleBuyToken}>
+          Buy more CHO tokens
+        </button>
       </div>
     );
   }
