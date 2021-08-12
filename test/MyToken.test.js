@@ -7,15 +7,17 @@ const BN = web3.utils.BN;
 const expect = chai.expect;
 
 contract("Token Test", (accounts) => {
-  const [initialHolder, recipient, anotherAccount] = accounts;
+  const [initialHolder, recipient] = accounts;
+
+  let myToken;
 
   beforeEach(async () => {
-    this.myToken = await Token.new(process.env.INITIAL_TOKENS);
+    myToken = await Token.new(process.env.INITIAL_TOKENS);
   });
 
   it("All tokens should be in my account", async () => {
-    let instance = this.myToken;
-    let totalSupply = await instance.totalSupply();
+    const instance = myToken;
+    const totalSupply = await instance.totalSupply();
     return expect(
       instance.balanceOf(initialHolder)
     ).to.eventually.be.a.bignumber.equal(totalSupply);
@@ -23,8 +25,8 @@ contract("Token Test", (accounts) => {
 
   it("I can send tokens from Account 1 to Account 2", async () => {
     const sendTokens = 1;
-    let instance = this.myToken;
-    let totalSupply = await instance.totalSupply();
+    const instance = myToken;
+    const totalSupply = await instance.totalSupply();
     expect(
       instance.balanceOf(initialHolder)
     ).to.eventually.be.a.bignumber.equal(totalSupply);
@@ -38,8 +40,8 @@ contract("Token Test", (accounts) => {
   });
 
   it("It's not possible to send more tokens than account 1 has", async () => {
-    let instance = this.myToken;
-    let balanceOfAccount = await instance.balanceOf(initialHolder);
+    const instance = myToken;
+    const balanceOfAccount = await instance.balanceOf(initialHolder);
     expect(instance.transfer(recipient, new BN(balanceOfAccount + 1))).to
       .eventually.be.rejected;
 
