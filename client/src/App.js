@@ -5,14 +5,13 @@ import KycContract from "./contracts/KycContract.json";
 import getWeb3 from "./getWeb3";
 
 import Whitelist from "./components/whitelist/Whitelist";
+import BuyToken from "./components/buyToken/BuyToken";
 
 import "./App.css";
 
 class App extends Component {
   state = {
     loaded: false,
-    kycAddress: "0x123...  ",
-    tokenSaleAddress: null,
     userTokens: 0,
   };
 
@@ -50,7 +49,6 @@ class App extends Component {
       this.setState(
         {
           loaded: true,
-          tokenSaleAddress: this.myTokenSale._address,
         },
         this.updateUserTokens
       );
@@ -76,12 +74,6 @@ class App extends Component {
       .on("data", this.updateUserTokens);
   };
 
-  handleBuyToken = async () => {
-    await this.myTokenSale.methods
-      .buyTokens(this.accounts[0])
-      .send({ from: this.accounts[0], value: 1 });
-  };
-
   render() {
     if (!this.state.loaded) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -93,12 +85,11 @@ class App extends Component {
           accounts={this.accounts}
           setKycCompleted={this.kycContract.methods.setKycCompleted}
         />
-        <h2>Buy Chourico-Tokens</h2>
-        <p>Send Ether to this address: {this.state.tokenSaleAddress}</p>
         <p>You have: {this.state.userTokens} CHO tokens</p>
-        <button type="button" onClick={this.handleBuyToken}>
-          Buy more CHO tokens
-        </button>
+        <BuyToken
+          accounts={this.accounts}
+          buyTokens={this.myTokenSale.methods.buyTokens}
+        />
       </div>
     );
   }
