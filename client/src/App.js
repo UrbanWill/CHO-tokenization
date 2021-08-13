@@ -6,12 +6,12 @@ import getWeb3 from "./getWeb3";
 
 import Whitelist from "./components/whitelist/Whitelist";
 import BuyToken from "./components/buyToken/BuyToken";
+import TokenCounter from "./components/tokenCounter/TokenCounter";
 
 import "./App.css";
 
 const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [userTokens, setUserTokens] = useState(0);
   const [accounts, setAccounts] = useState([]);
   const [myToken, setMyToken] = useState(null);
   const [myTokenSale, setMyTokenSale] = useState(null);
@@ -49,22 +49,6 @@ const App = () => {
     connectToWeb3();
   }, []);
 
-  const updateUserTokens = async () => {
-    const tokenQuantity = await myToken.methods.balanceOf(accounts[0]).call();
-    setUserTokens(tokenQuantity);
-  };
-
-  const listenToTokenTransfer = async () => {
-    myToken.events.Transfer({ to: accounts[0] }).on("data", updateUserTokens);
-  };
-
-  useEffect(() => {
-    if (myToken && accounts[0]) {
-      updateUserTokens();
-      listenToTokenTransfer();
-    }
-  }, [myToken, accounts[0]]);
-
   if (!isLoaded) {
     return <div>Loading Web3, accounts, and contract...</div>;
   }
@@ -76,7 +60,7 @@ const App = () => {
         accounts={accounts}
         setKycCompleted={kycContract.methods.setKycCompleted}
       />
-      <p>You have: {userTokens} CHO tokens</p>
+      <TokenCounter accounts={accounts} myToken={myToken} />
       <BuyToken accounts={accounts} buyTokens={myTokenSale.methods.buyTokens} />
     </div>
   );
