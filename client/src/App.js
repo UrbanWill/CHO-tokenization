@@ -31,6 +31,7 @@ const App = () => {
   }, [getAccounts]);
 
   const connectToWeb3 = useCallback(async () => {
+    // eslint-disable-next-line
     web3 = await getWeb3();
     const networkId = await web3.eth.getChainId();
 
