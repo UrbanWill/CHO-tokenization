@@ -61,8 +61,6 @@ const App = () => {
     listenMMAccount();
   }, []);
 
-  console.log(kycContract);
-
   if (!isLoaded) {
     return <div>Loading Web3, accounts, contracts...</div>;
   }
