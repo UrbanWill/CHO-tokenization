@@ -9,15 +9,17 @@ const TokenCounter = ({ accounts, myToken }) => {
   };
 
   const listenToTokenTransfer = async () => {
-    myToken.events.Transfer({ to: accounts[0] }).on("data", updateUserTokens);
+    myToken.events
+      .Transfer({ filter: { to: accounts[0] } })
+      .on("data", updateUserTokens);
   };
 
   useEffect(() => {
-    if (myToken && accounts[0]) {
+    if (accounts[0]) {
       updateUserTokens();
       listenToTokenTransfer();
     }
-  }, [myToken, accounts[0]]);
+  }, [accounts[0]]);
 
   return (
     <div>

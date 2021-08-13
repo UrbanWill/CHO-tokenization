@@ -61,8 +61,8 @@ const App = () => {
     listenMMAccount();
   }, []);
 
-  if (!isLoaded) {
-    return <div>Loading Web3, accounts, and contract...</div>;
+  if (!isLoaded || !accounts[0]) {
+    return <div>Loading Web3...</div>;
   }
 
   return (
