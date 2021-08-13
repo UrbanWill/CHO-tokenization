@@ -4,6 +4,7 @@ import "./whitelist.css";
 
 const Whitelist = ({ accounts, onSetKycCompleted }) => {
   const [addressToWhitelist, setAddressToWhitelist] = useState("0x123..");
+
   const handleInputChange = (event) => {
     setAddressToWhitelist(event.target.value);
   };
