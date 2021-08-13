@@ -49,7 +49,7 @@ const App = () => {
       KycContract.networks[networkId] && KycContract.networks[networkId].address
     );
 
-    getAccounts();
+    await getAccounts();
     setKycContract(kycContractInstance);
     setMyTokenSale(myTokenSaleInstance);
     setMyToken(myTokenInstance);
@@ -61,8 +61,10 @@ const App = () => {
     listenMMAccount();
   }, []);
 
-  if (!isLoaded || !accounts[0]) {
-    return <div>Loading Web3...</div>;
+  console.log(kycContract);
+
+  if (!isLoaded) {
+    return <div>Loading Web3, accounts, contracts...</div>;
   }
 
   return (
@@ -70,10 +72,18 @@ const App = () => {
       <h1>Chourico Token</h1>
       <Whitelist
         accounts={accounts}
-        setKycCompleted={kycContract.methods.setKycCompleted}
+        onSetKycCompleted={kycContract.methods.setKycCompleted}
       />
-      <TokenCounter accounts={accounts} myToken={myToken} />
-      <BuyToken accounts={accounts} buyTokens={myTokenSale.methods.buyTokens} />
+      <TokenCounter
+        accounts={accounts}
+        myToken={myToken}
+        onBalanceOf={myToken.methods.balanceOf}
+        onTransferEvent={myToken.events.Transfer}
+      />
+      <BuyToken
+        accounts={accounts}
+        onBuyTokens={myTokenSale.methods.buyTokens}
+      />
     </div>
   );
 };

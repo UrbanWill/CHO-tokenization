@@ -2,14 +2,14 @@ import React, { useState } from "react";
 
 import "./whitelist.css";
 
-const Whitelist = ({ accounts, setKycCompleted }) => {
+const Whitelist = ({ accounts, onSetKycCompleted }) => {
   const [addressToWhitelist, setAddressToWhitelist] = useState("0x123..");
   const handleInputChange = (event) => {
     setAddressToWhitelist(event.target.value);
   };
 
   const handleKycSubmit = async () => {
-    await setKycCompleted(addressToWhitelist).send({ from: accounts[0] });
+    await onSetKycCompleted(addressToWhitelist).send({ from: accounts[0] });
     alert(`Account ${addressToWhitelist} is now whitelisted`);
   };
 

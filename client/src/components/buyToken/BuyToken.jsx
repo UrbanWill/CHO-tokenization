@@ -1,8 +1,8 @@
 import React from "react";
 
-const BuyToken = ({ accounts, buyTokens }) => {
+const BuyToken = ({ accounts, onBuyTokens }) => {
   const handleBuyToken = async () => {
-    await buyTokens(accounts[0]).send({ from: accounts[0], value: 1 });
+    await onBuyTokens(accounts[0]).send({ from: accounts[0], value: 1 });
   };
   return (
     <div>
