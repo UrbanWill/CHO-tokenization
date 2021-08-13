@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 
+import PropTypes from "prop-types";
+
+const propTypes = {
+  accounts: PropTypes.array.isRequired,
+  onTransferEvent: PropTypes.func.isRequired,
+  onBalanceOf: PropTypes.func.isRequired,
+};
+
 const TokenCounter = ({ accounts, onTransferEvent, onBalanceOf }) => {
   const [userTokens, setUserTokens] = useState(0);
 
@@ -28,5 +36,7 @@ const TokenCounter = ({ accounts, onTransferEvent, onBalanceOf }) => {
     </div>
   );
 };
+
+TokenCounter.propTypes = propTypes;
 
 export default TokenCounter;

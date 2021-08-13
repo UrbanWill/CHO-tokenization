@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
+import PropTypes from "prop-types";
+
 import "./whitelist.css";
+
+const propTypes = {
+  accounts: PropTypes.array.isRequired,
+  onSetKycCompleted: PropTypes.func.isRequired,
+};
 
 const Whitelist = ({ accounts, onSetKycCompleted }) => {
   const [addressToWhitelist, setAddressToWhitelist] = useState("0x123..");
@@ -32,5 +39,7 @@ const Whitelist = ({ accounts, onSetKycCompleted }) => {
     </div>
   );
 };
+
+Whitelist.propTypes = propTypes;
 
 export default Whitelist;

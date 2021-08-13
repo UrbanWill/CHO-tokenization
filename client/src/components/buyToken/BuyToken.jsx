@@ -1,5 +1,12 @@
 import React from "react";
 
+import PropTypes from "prop-types";
+
+const propTypes = {
+  accounts: PropTypes.array.isRequired,
+  onBuyTokens: PropTypes.func.isRequired,
+};
+
 const BuyToken = ({ accounts, onBuyTokens }) => {
   const handleBuyToken = async () => {
     await onBuyTokens(accounts[0]).send({ from: accounts[0], value: 1 });
@@ -13,5 +20,7 @@ const BuyToken = ({ accounts, onBuyTokens }) => {
     </div>
   );
 };
+
+BuyToken.propTypes = propTypes;
 
 export default BuyToken;
