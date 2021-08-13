@@ -19,9 +19,19 @@ const App = () => {
 
   let web3;
 
+  const getAccounts = async () => {
+    const web3Accounts = await web3.eth.getAccounts();
+    setAccounts(web3Accounts);
+  };
+
+  const listenMMAccount = async () => {
+    window.ethereum.on("accountsChanged", async () => {
+      getAccounts();
+    });
+  };
+
   const connectToWeb3 = async () => {
     web3 = await getWeb3();
-    setAccounts(await web3.eth.getAccounts());
     const networkId = await web3.eth.getChainId();
 
     const myTokenInstance = new web3.eth.Contract(
@@ -39,6 +49,7 @@ const App = () => {
       KycContract.networks[networkId] && KycContract.networks[networkId].address
     );
 
+    getAccounts();
     setKycContract(kycContractInstance);
     setMyTokenSale(myTokenSaleInstance);
     setMyToken(myTokenInstance);
@@ -47,6 +58,7 @@ const App = () => {
 
   useEffect(() => {
     connectToWeb3();
+    listenMMAccount();
   }, []);
 
   if (!isLoaded) {
