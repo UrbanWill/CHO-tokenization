@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import MyToken from "./contracts/MyToken.json";
 import MyTokenSale from "./contracts/MyTokenSale.json";
 import KycContract from "./contracts/KycContract.json";
@@ -19,18 +19,18 @@ const App = () => {
 
   let web3;
 
-  const getAccounts = async () => {
+  const getAccounts = useCallback(async () => {
     const web3Accounts = await web3.eth.getAccounts();
     setAccounts(web3Accounts);
-  };
+  }, [web3]);
 
-  const listenMMAccount = async () => {
+  const listenMMAccount = useCallback(async () => {
     window.ethereum.on("accountsChanged", async () => {
       getAccounts();
     });
-  };
+  }, [getAccounts]);
 
-  const connectToWeb3 = async () => {
+  const connectToWeb3 = useCallback(async () => {
     web3 = await getWeb3();
     const networkId = await web3.eth.getChainId();
 
@@ -54,12 +54,12 @@ const App = () => {
     setMyTokenSale(myTokenSaleInstance);
     setMyToken(myTokenInstance);
     setIsLoaded(true);
-  };
+  }, []);
 
   useEffect(() => {
     connectToWeb3();
     listenMMAccount();
-  }, []);
+  }, [connectToWeb3, listenMMAccount]);
 
   if (!isLoaded) {
     return <div>Loading Web3, accounts, contracts...</div>;
